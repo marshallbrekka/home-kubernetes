@@ -5,6 +5,33 @@ set -e
 ROOT=$(dirname "${BASH_SOURCE[0]}")/..
 source "${ROOT}/build/common.sh"
 
+
+# Note: Tutorial on how to use the associative arrays
+#
+# Since we do a lot of variable lookup by strings, there is a very
+# specific way that the maps must be accessed.
+# Given a variable that contains a string, which presents the name of one of our
+# associative arrays:
+#
+#   var_name="home_k8s_machine_settings_master1"
+#
+# We have to first save our desired field access to ANOTHER variable (if you find a way to
+# do this without the middle step, please tell me).
+#
+#   field_ref=$var_name[board]
+#
+# After we have `field_ref`, we can use parameter expansion to get the desired field value.
+#
+#   board_name="${!field_ref}"
+#
+# Put all togeth, to get the `board` field from the
+# map named `home_k8s_machine_settings_master1`.
+#
+#   var_name="home_k8s_machine_settings_master1"
+#   field_ref=$var_name[board]
+#   board_name="${!field_ref}"
+
+
 ##
 ## Base OS Images by board type
 ##
@@ -184,26 +211,5 @@ function home-k8s::builder::overlay() {
     umount ${machine_dir}/mount
 }
 
-
-# machine_identity="master1"
-# var_name="home_k8s_machine_settings_master1"
-# echo "var name $var_name"
-
-# machine=$home_k8s_machine_settings_master1
-
-# ref=$var_name[board]
-# echo "${!ref}"
-# echo "${home_k8s_machine_settings_master1[board]}"
-
-
-
-# declare -A x
-# declare -A x_foo
-# x_foo=([a]=1 [b]=3)
-# x['foo']=x_foo;
-
-# echo ${${x[foo]}[a]}
-
-home-k8s::builder::image artifacts master-1
-
-# home-k8s::flash-device-save artifacts/machines/master-1/image.img /dev/disk4
+# Example building of an image.
+# home-k8s::builder::image artifacts master-1

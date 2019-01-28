@@ -11,9 +11,6 @@ function home-k8s::log() {
 #   attr1: value1
 #   attr2: value2
 function home-k8s::log-attrs() {
-    local prefix=""
-    local first=1
-
     (>&2 echo "${1}")
 
     for (( i=2; i<=$#; i=i+2)); do
