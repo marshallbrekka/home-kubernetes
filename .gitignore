@@ -1,0 +1,4 @@
+# Build artifacts
+artifacts
+# Private resources that will be overlayed on the filesystem
+private_overlay

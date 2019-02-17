@@ -24,7 +24,7 @@ source "${ROOT}/build/common.sh"
 #
 #   board_name="${!field_ref}"
 #
-# Put all togeth, to get the `board` field from the
+# Put all together, to get the `board` field from the
 # map named `home_k8s_machine_settings_master1`.
 #
 #   var_name="home_k8s_machine_settings_master1"
@@ -199,6 +199,19 @@ function home-k8s::builder::overlay() {
                         "Mount" "${machine_dir}/mount"
     home-k8s::log "mount -o offset=${offset_size} ${machine_dir}/image.img ${machine_dir}/mount"
     mount -o offset=${offset_size} ${machine_dir}/image.img ${machine_dir}/mount
+
+    # Copy generic overlay
+    home-k8s::log-attrs "Copying generic overlay onto disk" \
+                        "Overlay Dir" "overlay/*'" \
+                        "Disk Dir" "'${machine_dir}/mount/'"
+    cp --recursive overlay/* ${machine_dir}/mount/
+
+    # Copy private overlay
+    home-k8s::log-attrs "Copying private overlay onto disk" \
+                        "Overlay Dir" "private_overlay/*'" \
+                        "Disk Dir" "'${machine_dir}/mount/'"
+    mkdir -p private_overlay
+    cp --recursive private_overlay/* ${machine_dir}/mount/
 
     # Copy the overlay changes
     home-k8s::log-attrs "Copying overlay onto disk" \

@@ -25,5 +25,3 @@ function home-k8s::flash-device-safe() {
         esac
     done
 }
-
-home-k8s::flash-device-safe artifacts/machines/master-1/image.img /dev/disk4
